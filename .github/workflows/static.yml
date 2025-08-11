@@ -1,8 +1,16 @@
 name: Deploy Presentation
 
+
 on:
   push:
     branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   deploy:
