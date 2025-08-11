@@ -1,0 +1,25 @@
+:root {
+	--color: darkslategrey;
+	--background-color: snow;
+
+	--gap: 1rem;
+
+	--padding-sm: 0.5rem;
+	--padding: 1rem;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	justify-content: center;
+	gap: var(--gap);
+	background-color: var(--background-color);
+	color: var(--color);
+}
+
+main {
+	padding-block: var(--padding);
+	padding-inline: calc(1dvw);
+	max-width: 1200px;
+}
