@@ -18,22 +18,13 @@ interface InsertColor extends Color {
 	active?: boolean;
 }
 
-interface UpdateColor extends Color {
-	id: number;
-	rank?: number | null;
-	active?: boolean;
-}
-
 class DB {
-	#sequence = 0;
 	#colors: SelectColor[] = [{ id: 1, name: 'Blue', rank: 1, active: false }];
+	#sequence = this.#colors.length + 1;
 
-	get #sequence(): number {
-		return this.#sequence;
-	}
-
-	#incrementSequence(): void {
-		this.#sequence += 1;
+	#logger() {
+		console.log('Sequence: ', this.#sequence);
+		console.log('Colors: ', this.#colors);
 	}
 
 	findById(id: number): SelectColor | null {
@@ -41,28 +32,31 @@ class DB {
 	}
 
 	all(): SelectColor[] {
-		return this.#colors.sort((a, b) => {
-			if (a.rank === null) return -1;
-			if (b.rank === null) return 1;
-			return b.rank - a.rank;
-		});
+		return this.#colors
+			.sort((a, b) => b.id - a.id)
+			.sort((a, b) => {
+				if (a.rank === null) return -1;
+				if (b.rank === null) return 1;
+				return b.rank - a.rank;
+			});
 	}
 
-	insert(m: InsertColor): SelectColor {
-		const { id = this.#sequence, name, rank = null, active = false } = m;
-		if (this.#colors.some(({ id }) => m.id === id)) throw Error('ID not unique');
-		this.#incrementSequence();
+	insert(c: InsertColor): SelectColor {
+		const { id = this.#sequence, name, rank = null, active = false } = c;
+		if (this.#colors.some(({ id }) => c.id === id)) throw Error('ID not unique');
+		this.#sequence += 1;
 		const newMaterial = { id, name, rank, active };
 		this.#colors = [...this.#colors, newMaterial];
+		this.#logger();
 		return newMaterial;
 	}
 
-	update(m: UpdateColor): SelectColor {
-		const { id, name, rank, active } = m;
-		const color = this.#colors.find(({ id }) => m.id === id);
-		if (color) throw Error('ID not found');
-		this.#colors = [...this.#colors, newMaterial];
-		return newMaterial;
+	deleteById(id: number): SelectColor {
+		const cIdx = this.#colors.findIndex((c) => id === c.id);
+		if (cIdx === -1) throw Error('ID not found');
+		const [deletedColor] = this.#colors.splice(cIdx, 1);
+		this.#logger();
+		return deletedColor;
 	}
 }
 

@@ -3,6 +3,7 @@
 	--background-color: snow;
 
 	--gap: 1rem;
+	--gap-sm: 0.5rem;
 
 	--padding-sm: 0.5rem;
 	--padding: 1rem;
@@ -22,4 +23,13 @@ main {
 	padding-block: var(--padding);
 	padding-inline: calc(1dvw);
 	max-width: 1200px;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
 }
