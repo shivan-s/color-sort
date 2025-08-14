@@ -19,7 +19,10 @@
 			<h2>Inactive</h2>
 			<ul>
 				{#each inactive as m (m.id)}
-					<li>{m.name}</li>
+					<li>
+						{m.name}
+						<button>Activate</button>
+					</li>
 				{/each}
 			</ul>
 		</header>
@@ -45,6 +48,9 @@
 		display: grid;
 		gap: 0.25rem;
 		& li {
+			display: inline-grid;
+			grid-template-columns: auto auto;
+			align-items: center;
 			border: grey solid 1px;
 			border-radius: 0.25rem;
 			padding: 0.5rem;
