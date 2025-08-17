@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import Container from '$lib/components/Container.svelte';
 	import type { PageProps } from './$types';
 
@@ -33,7 +34,17 @@
 				<li>
 					{c.name}
 					<div class="buttons">
-						<form method="POST" action="?/activate">
+						<form
+							method="POST"
+							action="?/activate"
+							use:enhance={() => {
+								loading = true;
+								return async ({ update }) => {
+									await update();
+									loading = false;
+								};
+							}}
+						>
 							<input type="hidden" name="id" value={c.id} />
 							<button>Activate</button>
 						</form>
@@ -51,15 +62,45 @@
 				<li>
 					{c.name}
 					<div class="buttons">
-						<form method="POST" action="?/promote">
+						<form
+							method="POST"
+							action="?/promote"
+							use:enhance={() => {
+								loading = true;
+								return async ({ update }) => {
+									await update();
+									loading = false;
+								};
+							}}
+						>
 							<input type="hidden" name="id" value={c.id} />
 							<button disabled={idx === 0}>Promote</button>
 						</form>
-						<form method="POST" action="?/demote">
+						<form
+							method="POST"
+							action="?/demote"
+							use:enhance={() => {
+								loading = true;
+								return async ({ update }) => {
+									await update();
+									loading = false;
+								};
+							}}
+						>
 							<input type="hidden" name="id" value={c.id} />
 							<button disabled={idx === active.length - 1}>Demote</button>
 						</form>
-						<form method="POST" action="?/deactivate">
+						<form
+							method="POST"
+							action="?/deactivate"
+							use:enhance={() => {
+								loading = true;
+								return async ({ update }) => {
+									await update();
+									loading = false;
+								};
+							}}
+						>
 							<input type="hidden" name="id" value={c.id} />
 							<button>Deactivate</button>
 						</form>
@@ -107,6 +148,13 @@
 		&[aria-busy='true'] {
 			opacity: 1;
 			visibility: visible;
+			animation: pulse 1s infinite;
+		}
+	}
+
+	@keyframes pulse {
+		50% {
+			opacity: 0.5;
 		}
 	}
 </style>
