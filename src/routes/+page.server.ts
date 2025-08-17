@@ -10,20 +10,6 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	create: async ({ request }) => {
-		const fd = await request.formData();
-		const name = fd.get('name')?.toString();
-		if (!name) return fail(400, 'Name is invalid');
-		const newColor = await db.insert({ name });
-		return { newColor };
-	},
-	delete: async ({ request }) => {
-		const fd = await request.formData();
-		const id = fd.get('id')?.toString();
-		if (!id) return fail(400, 'ID is invalid');
-		const deletedColor = await db.deleteById(parseInt(id));
-		return { deletedColor };
-	},
 	activate: async ({ request }) => {
 		const fd = await request.formData();
 		const id = fd.get('id')?.toString();

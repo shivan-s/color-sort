@@ -5,17 +5,25 @@
 	let { data }: PageProps = $props();
 
 	let loading = $state(false);
-	let inactive = $derived(data.colors.filter((c) => !c.active));
-	let active = $derived(data.colors.filter((c) => c.active));
+	let inactive = $derived.by(() => {
+		const inactive = $state(
+			data.colors
+				.filter((c) => !c.active)
+				.sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+		);
+		return inactive;
+	});
+	let active = $derived.by(() => {
+		const active = $state(
+			data.colors.filter((c) => c.active).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
+		);
+		return active;
+	});
 </script>
 
 <div class="wrapper">
-	<form method="POST" action="?/create">
-		<div>
-			<input name="name" required /><button>Submit</button>
-		</div>
-	</form>
 	<span aria-busy={loading}>Loading...</span>
+	<span class="placeholer"></span>
 	<Container>
 		<header>
 			<h2>Inactive</h2>
@@ -25,10 +33,6 @@
 				<li>
 					{m.name}
 					<div class="buttons">
-						<form method="POST" action="?/delete">
-							<input type="hidden" name="id" value={m.id} />
-							<button>Delete</button>
-						</form>
 						<form method="POST" action="?/activate">
 							<input type="hidden" name="id" value={m.id} />
 							<button>Activate</button>
@@ -43,7 +47,7 @@
 			<h2>Active</h2>
 		</header>
 		<ul>
-			{#each active.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0)) as c, idx (idx)}
+			{#each active as c, idx (idx)}
 				<li>
 					{c.name}
 					<div class="buttons">
@@ -71,13 +75,6 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
-	}
-
-	form {
-		& div {
-			display: flex;
-			gap: 0.5rem;
-		}
 	}
 
 	ul {
