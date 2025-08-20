@@ -29,12 +29,12 @@
 			<h2>Inactive</h2>
 		</header>
 		<ul>
-			{#each inactive as m (m.id)}
+			{#each inactive as c, idx (idx)}
 				<li>
-					{m.name}
+					{c.name}
 					<div class="buttons">
 						<form method="POST" action="?/activate">
-							<input type="hidden" name="id" value={m.id} />
+							<input type="hidden" name="id" value={c.id} />
 							<button>Activate</button>
 						</form>
 					</div>
