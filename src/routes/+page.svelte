@@ -83,6 +83,7 @@
 		& li {
 			display: inline-grid;
 			grid-template-columns: 1fr auto;
+			background-color: inherit;
 			gap: 0.125rem;
 			align-items: center;
 			border: grey solid 1px;
