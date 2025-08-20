@@ -5,10 +5,14 @@
 	import type { PageProps } from './$types';
 	import { sineInOut } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
+	import { prefersReducedMotion } from 'svelte/motion';
 
 	let { data }: PageProps = $props();
 
-	const [send, receive] = crossfade({ easing: sineInOut });
+	const [send, receive] = crossfade({
+		easing: sineInOut,
+		duration: prefersReducedMotion.current ? 0 : 250
+	});
 
 	let loading = $state(false);
 	let inactive = $derived.by(() => {
@@ -37,7 +41,7 @@
 		<ul>
 			{#each inactive as c, idx (c.id)}
 				<li
-					animate:flip={{ easing: sineInOut, duration: 250 }}
+					animate:flip={{ easing: sineInOut, duration: prefersReducedMotion.current ? 0 : 250 }}
 					in:receive={{ key: c.id }}
 					out:send={{ key: c.id }}
 				>
@@ -71,7 +75,7 @@
 		<ul>
 			{#each active as c, idx (c.id)}
 				<li
-					animate:flip={{ easing: sineInOut, duration: 250 }}
+					animate:flip={{ easing: sineInOut, duration: prefersReducedMotion.current ? 0 : 250 }}
 					in:receive={{ key: c.id }}
 					out:send={{ key: c.id }}
 				>
