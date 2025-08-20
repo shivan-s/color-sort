@@ -35,7 +35,7 @@
 			<h2>Inactive</h2>
 		</header>
 		<ul>
-			{#each inactive as c (c.id)}
+			{#each inactive as c, idx (c.id)}
 				<li
 					animate:flip={{ easing: sineInOut, duration: 250 }}
 					in:receive={{ key: c.id }}
@@ -49,10 +49,7 @@
 							use:enhance={() => {
 								loading = true;
 								active.push(c);
-								inactive.splice(
-									inactive.findIndex((x) => x.id === c.id),
-									1
-								);
+								inactive.splice(idx, 1);
 								return async ({ update }) => {
 									await update();
 									loading = false;
