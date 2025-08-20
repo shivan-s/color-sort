@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { crossfade } from 'svelte/transition';
 	import Container from '$lib/components/Container.svelte';
 	import type { PageProps } from './$types';
+	import { sineInOut } from 'svelte/easing';
+	import { flip } from 'svelte/animate';
 
 	let { data }: PageProps = $props();
+
+	const [send, receive] = crossfade({ easing: sineInOut });
 
 	let loading = $state(false);
 	let inactive = $derived.by(() => {
@@ -31,7 +36,7 @@
 		</header>
 		<ul>
 			{#each inactive as m (m.id)}
-				<li>
+				<li animate:flip in:receive out:send>
 					{m.name}
 					<div class="buttons">
 						<form
@@ -59,7 +64,7 @@
 		</header>
 		<ul>
 			{#each active as c, idx (idx)}
-				<li>
+				<li animate:flip in:receive out:send>
 					{c.name}
 					<div class="buttons">
 						<form
