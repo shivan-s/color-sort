@@ -35,22 +35,27 @@
 			<h2>Inactive</h2>
 		</header>
 		<ul>
-			{#each inactive as m (m.id)}
+			{#each inactive as c (c.id)}
 				<li animate:flip in:receive out:send>
-					{m.name}
+					{c.name}
 					<div class="buttons">
 						<form
 							method="POST"
 							action="?/activate"
 							use:enhance={() => {
 								loading = true;
+								active.push(c);
+								inactive.splice(
+									inactive.findIndex((x) => x.id === c.id),
+									1
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
 								};
 							}}
 						>
-							<input type="hidden" name="id" value={m.id} />
+							<input type="hidden" name="id" value={c.id} />
 							<button>Activate</button>
 						</form>
 					</div>
@@ -72,6 +77,14 @@
 							action="?/promote"
 							use:enhance={() => {
 								loading = true;
+								active.splice(
+									active.findIndex((x) => x.id === c.id) - 1,
+									0,
+									active.splice(
+										active.findIndex((x) => x.id === c.id),
+										1
+									)[0]
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
@@ -86,6 +99,14 @@
 							action="?/demote"
 							use:enhance={() => {
 								loading = true;
+								active.splice(
+									active.findIndex((x) => x.id === c.id) + 1,
+									0,
+									active.splice(
+										active.findIndex((x) => x.id === c.id),
+										1
+									)[0]
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
@@ -100,6 +121,17 @@
 							action="?/deactivate"
 							use:enhance={() => {
 								loading = true;
+								inactive.splice(
+									[...inactive, c]
+										.sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+										.findIndex((x) => x.id === c.id),
+									0,
+									c
+								);
+								active.splice(
+									active.findIndex((x) => x.id === c.id),
+									1
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
