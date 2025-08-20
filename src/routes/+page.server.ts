@@ -16,7 +16,11 @@ export const actions: Actions = {
 		if (!id) return fail(400, 'ID is invalid');
 		const newRank =
 			Math.max(...(await db.all()).filter((c) => c.active).map((c) => c.rank ?? 0)) + 1;
-		const updatedColor = await db.update({ id: parseInt(id), active: true, rank: newRank });
+		const updatedColor = await db.update({
+			id: parseInt(id),
+			active: true,
+			rank: newRank === -Infinity ? 1 : newRank
+		});
 		return { updatedColor };
 	},
 	deactivate: async ({ request }) => {

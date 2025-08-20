@@ -29,7 +29,7 @@
 			<h2>Inactive</h2>
 		</header>
 		<ul>
-			{#each inactive as c, idx (idx)}
+			{#each inactive as c (c.id)}
 				<li>
 					{c.name}
 					<div class="buttons">
@@ -47,7 +47,7 @@
 			<h2>Active</h2>
 		</header>
 		<ul>
-			{#each active as c, idx (idx)}
+			{#each active as c, idx (c.id)}
 				<li>
 					{c.name}
 					<div class="buttons">
