@@ -37,7 +37,7 @@
 		<ul>
 			{#each inactive as c (c.id)}
 				<li
-					animate:flip={{ easing: sineInOut }}
+					animate:flip={{ easing: sineInOut, duration: 250 }}
 					in:receive={{ key: c.id }}
 					out:send={{ key: c.id }}
 				>
@@ -69,7 +69,7 @@
 		<ul>
 			{#each active as c, idx (c.id)}
 				<li
-					animate:flip={{ easing: sineInOut }}
+					animate:flip={{ easing: sineInOut, duration: 250 }}
 					in:receive={{ key: c.id }}
 					out:send={{ key: c.id }}
 				>
