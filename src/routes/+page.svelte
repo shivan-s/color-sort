@@ -48,6 +48,11 @@
 							action="?/activate"
 							use:enhance={() => {
 								loading = true;
+								active.push(c);
+								inactive.splice(
+									inactive.findIndex((x) => x.id === c.id),
+									1
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
@@ -80,6 +85,14 @@
 							action="?/promote"
 							use:enhance={() => {
 								loading = true;
+								active.splice(
+									active.findIndex((x) => x.id === c.id) - 1,
+									0,
+									active.splice(
+										active.findIndex((x) => x.id === c.id),
+										1
+									)[0]
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
@@ -94,6 +107,14 @@
 							action="?/demote"
 							use:enhance={() => {
 								loading = true;
+								active.splice(
+									active.findIndex((x) => x.id === c.id) + 1,
+									0,
+									active.splice(
+										active.findIndex((x) => x.id === c.id),
+										1
+									)[0]
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
@@ -108,6 +129,17 @@
 							action="?/deactivate"
 							use:enhance={() => {
 								loading = true;
+								inactive.splice(
+									[...inactive, c]
+										.sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+										.findIndex((x) => x.id === c.id),
+									0,
+									c
+								);
+								active.splice(
+									active.findIndex((x) => x.id === c.id),
+									1
+								);
 								return async ({ update }) => {
 									await update();
 									loading = false;
